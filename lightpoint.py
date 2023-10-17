@@ -3,16 +3,30 @@ import color
 
 
 class LightPoint:
-    # Position is a vector of size 3.
-    # position = np.array()
-    # color = Color()
-    # specular = 0.0
-    # shadow = 0.0
-    # radius = 0.0
+    """
+    Class representing a light source in a 3D space.
 
-    def __init__(self, position: np.ndarray, inputColor: color.Color, specularity: float, shadow: float, radius: float):
+    Attributes:
+        position (np.ndarray): The position of the light source.
+        color (color.Color): The color of the light source.
+        specularity (float): The specularity of the light source.
+        shadow (float): The shadow value of the light source.
+        radius (float): The radius of the light source.
+    """
+
+    def __init__(self, position: np.ndarray, input_color: color.Color, specularity: float, shadow: float, radius: float):
+        """
+        Initialize a LightPoint object with the given parameters.
+
+        Args:
+            position (np.ndarray): The position of the light source.
+            input_color (color.Color): The color of the light source.
+            specularity (float): The specularity of the light source.
+            shadow (float): The shadow value of the light source.
+            radius (float): The radius of the light source.
+        """
         self.position = position
-        self.color = inputColor
+        self.color = input_color
         self.specularity = specularity
         self.shadow = shadow
         self.radius = radius
