@@ -41,10 +41,10 @@ def main():
         return
 
     # Parse the scene from the specified file
-    ray_tracer.parseScene(scene_file_name)
+    ray_tracer.parse_scene(scene_file_name)
 
     # Render the scene and save the output image
-    ray_tracer.renderScene(output_file_name)
+    ray_tracer.render_scene(output_file_name)
 
 
 if __name__ == '__main__':

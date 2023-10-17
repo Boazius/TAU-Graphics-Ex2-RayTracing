@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["input/pool.txt", "scenes/pool25x25.png", "25", "25"]
+            "args": ["input/pool.txt", "scenes/pool25x25.png", "15", "15"]
         }
     ]
 }
