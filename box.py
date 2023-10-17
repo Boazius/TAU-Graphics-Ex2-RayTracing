@@ -6,50 +6,69 @@ import sys
 import intersection
 
 
-# boxes class
-
 class Box:
+    """
+    Class representing a box in a 3D space.
+
+    Attributes:
+        center (np.ndarray): The center point of the box.
+        half_scale (np.ndarray): Half of the length of each side of the box.
+        material (material.Material): The material of the box.
+    """
 
     def __init__(self, center: np.ndarray, half_scale: np.ndarray, input_material: material.Material):
-        # Normalize Vectors from input.
+        """
+        Initialize a Box object with the given parameters.
+
+        Args:
+            center (np.ndarray): The center point of the box.
+            half_scale (np.ndarray): Half of the length of each side of the box.
+            input_material (material.Material): The material of the box.
+        """
         self.center = center
         self.half_scale = vector.multiply(half_scale, 0.5)
         self.material = input_material
 
-    def intersect(self, inputRay: ray.Ray, shadow: bool):
+    def intersect(self, input_ray: ray.Ray, shadow: bool):
+        """
+        Compute intersection of the box with the input ray.
+
+        Args:
+            input_ray (ray.Ray): The input ray to check for intersection.
+            shadow (bool): A boolean indicating if the box is a shadow or not.
+
+        Returns:
+            intersection.Intersection or None: An Intersection object if there is an intersection, None otherwise.
+        """
         t_near = -float("inf")
         t_far = float("inf")
-        offset_center = vector.minus(self.center, inputRay.start_point)
+        offset_center = vector.minus(self.center, input_ray.start_point)
         axis = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+
         for i in range(3):
             r = offset_center.item(i)
-            s = inputRay.direction.item(i)
+            s = input_ray.direction.item(i)
+
             if abs(s) < sys.float_info.epsilon:
-                t0 = r + self.half_scale.item(i)
-                if t0 > 0:
-                    t0 = float("inf")
-                else:
-                    t0 = -float("inf")
-                t1 = r - self.half_scale.item(i)
-                if t1 > 0:
-                    t1 = float("inf")
-                else:
-                    t1 = -float("inf")
+                t0 = float("inf") if (r + self.half_scale.item(i)) > 0 else -float("inf")
+                t1 = float("inf") if (r - self.half_scale.item(i)) > 0 else -float("inf")
             else:
                 t0 = (r + self.half_scale.item(i)) / s
                 t1 = (r - self.half_scale.item(i)) / s
+
             if t0 > t1:
-                tmp = t0
-                t0 = t1
-                t1 = tmp
+                t0, t1 = t1, t0
+
             t_near = max(t_near, t0)
             t_far = min(t_far, t1)
-            if t_near > t_far or t_far < 0:
-                return None  # no intersection
-        if t_near < 0:
-            return None  # opposite direction
 
-        intersection_point = vector.add(inputRay.start_point, vector.multiply(inputRay.direction, t_near))
+            if t_near > t_far or t_far < 0:
+                return None  # No intersection
+
+        if t_near < 0:
+            return None  # Opposite direction
+
+        intersection_point = vector.add(input_ray.start_point, vector.multiply(input_ray.direction, t_near))
         pc = vector.minus(intersection_point, self.center)
         normal = None
 
@@ -61,4 +80,5 @@ class Box:
             if abs(vector.dot_product(pc, b) + self.half_scale.item(i)) <= sys.float_info.epsilon:
                 normal = vector.multiply(b, -1.0)
                 break
-        return intersection.Intersection(intersection_point, normal, inputRay.direction, self.material)
+
+        return intersection.Intersection(intersection_point, normal, input_ray.direction, self.material)

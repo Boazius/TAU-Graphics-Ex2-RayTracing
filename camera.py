@@ -2,15 +2,30 @@ import numpy as np
 import vector
 
 
-# camera class
 class Camera:
-    camera_vars = np.zeros(10, dtype=int)
+    """
+    Class representing a camera in a 3D space.
 
-    # position, look_at,up,right are 3D vectors.
-    # screen_d, screen_w are numbers.
-    # x is an array of 10 integers.
+    Attributes:
+        position (np.ndarray): The position of the camera.
+        look_at (np.ndarray): The direction the camera is looking at.
+        up (np.ndarray): The up direction of the camera.
+        screen_height (float): The height of the screen.
+        screen_width (float): The width of the screen.
+        right (np.ndarray): The vector representing the right direction of the camera.
+    """
+
     def __init__(self, position: np.ndarray, look_at: np.ndarray, up: np.ndarray, screen_d: float, screen_w: float):
-        # Normalize Vectors from input.
+        """
+        Initialize a Camera object with the given parameters.
+
+        Args:
+            position (np.ndarray): The position of the camera.
+            look_at (np.ndarray): The direction the camera is looking at.
+            up (np.ndarray): The up direction of the camera.
+            screen_d (float): The distance from the camera to the screen.
+            screen_w (float): The width of the screen.
+        """
         self.position = position
         self.look_at = vector.normalized(vector.minus(look_at, position))
         self.up = vector.normalized(vector.projected_left(up, self.look_at))

@@ -8,7 +8,7 @@
             "name": "pool.txt",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": ["input/pool.txt", "scenes/pool25x25.png", "15", "15"]
