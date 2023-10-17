@@ -4,23 +4,44 @@ import shape
 import math
 import intersection
 import numpy as np
-import shape
-import material
 import ray
 
 
 class Sphere(shape.Shape):
-    # center = vector()
-    # radius = 0.0
-    # radius_sq = 0.0
+    """
+    Class representing a sphere in the scene.
+
+    Attributes:
+        center (np.ndarray): The center of the sphere.
+        radius (float): The radius of the sphere.
+        radius_sq (float): The square of the radius of the sphere.
+    """
 
     def __init__(self, center: np.ndarray, radius: float, inputMaterial: material.Material):
+        """
+        Initialize the Sphere with the provided center, radius, and material.
+
+        Args:
+            center (np.ndarray): The center of the sphere.
+            radius (float): The radius of the sphere.
+            inputMaterial (material.Material): The material associated with the sphere.
+        """
         shape.Shape.__init__(self, inputMaterial)
         self.center = center
         self.radius = radius
         self.radius_sq = radius * radius
 
     def intersect(self, inputRay: ray.Ray, shadow: bool):
+        """
+        Calculate the intersection of the sphere with the given ray.
+
+        Args:
+            inputRay (ray.Ray): The ray to check for intersection with the sphere.
+            shadow (bool): Boolean indicating whether the intersection is for shadow calculation.
+
+        Returns:
+            intersection.Intersection: The intersection point, if one exists.
+        """
         currVector = vector.minus(self.center, inputRay.start_point)
         tca = vector.dot_product(currVector, inputRay.direction)
         if tca < 0:
